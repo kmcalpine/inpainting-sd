@@ -44,7 +44,6 @@
 	};
 
 	async function readAsDataURL(file: any) {
-		console.log("reading as data url");
 		return new Promise((resolve, reject) => {
 			const fr = new FileReader();
 			fr.onerror = reject;
