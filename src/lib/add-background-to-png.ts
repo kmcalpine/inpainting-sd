@@ -1,4 +1,5 @@
-const PNG = require("pngjs").PNG;
+// @ts-ignore
+import { PNG } from "pngjs";
 import { dataUriToBuffer } from "./data-uri-to-buffer";
 import bufferToDataUrl from "buffer-to-data-url";
 

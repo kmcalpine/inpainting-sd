@@ -1,8 +1,14 @@
-import type { Handler } from "vite-plugin-mix";
+import { addBackgroundToPNG } from "@/lib/add-background-to-png";
+import express from "express";
 
-export const handler: Handler = (req, res, next) => {
-	if (req.path === "/api/predictions") {
-		console.log("inside");
+const app = express();
+app.use(express.json());
+
+app.post("/api/predictions", (req, res) => {
+	if (req.body.mask) {
+		req.body.mask = addBackgroundToPNG(req.body.mask);
 	}
-	next();
-};
+	res.end(req.body.mask);
+});
+
+export const handler = app;
