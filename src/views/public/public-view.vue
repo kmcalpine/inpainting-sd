@@ -1,8 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-	<div>
-		<span>public view</span>
+	<div class="w-full h-full flex p-20">
 		<slot />
 	</div>
 </template>
