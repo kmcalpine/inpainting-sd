@@ -25,7 +25,6 @@ app.post("/api/predictions", async (req, res) => {
 });
 
 async function getPredictions(body: any) {
-	console.log("predicting");
 	try {
 		const response = await axios.post(`${API_HOST}/v1/predictions`, body, {
 			headers: {
