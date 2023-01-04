@@ -11,6 +11,16 @@
 
 	const canvas = ref(null);
 	const image = ref("");
+
+	watch(image, async () => {
+		const response = await fetch("../api/predictions", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: "",
+		});
+	});
 </script>
 
 <template>
