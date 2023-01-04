@@ -14,7 +14,7 @@
 				@image-dropped="addFile"
 				#default="{ dropZoneActive }"
 			/>
-			<Canvas v-else class="" :userImg="files[0].url"></Canvas>
+			<Canvas v-else class="" :userImg="files[0]"></Canvas>
 		</div>
 	</public-view>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-	import { ref, watch } from "vue";
+	import { ref, onMounted } from "vue";
 	import VueDrawingCanvas from "vue-drawing-canvas";
 	export interface Props {
-		userImg: string;
+		userImg: any;
 	}
 
 	const props = withDefaults(defineProps<Props>(), {
@@ -14,7 +14,8 @@
 	const image = ref("");
 	const origImage = ref<null | string>(null);
 
-	const submitHandler = async () => {
+	const submitHandler = async (e: any) => {
+		e.preventDefault();
 		if (canvas.value !== null) {
 			origImage.value = image.value;
 			showCanvas.value = false;
@@ -26,11 +27,13 @@
 			// @ts-ignore
 			canvas.value.redraw();
 		}
+		console.log("here");
 		const body = {
-			prompt: "",
-			initImg: props.userImg,
+			prompt: "a woman singing on stage",
+			init_image: await readAsDataURL(props.userImg.file),
 			mask: image.value,
 		};
+		console.log("after");
 		const response = await fetch("../api/predictions", {
 			method: "POST",
 			headers: {
@@ -39,12 +42,24 @@
 			body: JSON.stringify(body),
 		});
 	};
+
+	async function readAsDataURL(file: any) {
+		console.log("reading as data url");
+		return new Promise((resolve, reject) => {
+			const fr = new FileReader();
+			fr.onerror = reject;
+			fr.onload = () => {
+				resolve(fr.result);
+			};
+			fr.readAsDataURL(file);
+		});
+	}
 </script>
 
 <template>
 	<div class="flex flex-col">
 		<div class="w-full h-full">
-			<div><img :src="props.userImg" /></div>
+			<div><img :src="props.userImg.url" /></div>
 			<div class="absolute top-0 left-0 w-full h-full bg-transparent">
 				<img
 					v-if="origImage"
