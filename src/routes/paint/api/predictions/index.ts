@@ -7,6 +7,25 @@ const API_HOST = "https://api.replicate.com";
 const app = express();
 app.use(express.json({ limit: "200mb" }));
 
+app.post("/api/predictions/:id", async (req, res) => {
+	console.log(req.params.id);
+	try {
+		console.log(`${API_HOST}/v1/predictions/${req.params.id}`);
+		const response = await axios.get(
+			`${API_HOST}/v1/predictions/${req.params.id}`,
+			{
+				headers: {
+					Authorization: `Token ${import.meta.env.VITE_REPLICATE_KEY}`,
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		console.log(response.data);
+		res.statusCode = 201;
+		res.end(JSON.stringify(response.data));
+	} catch {}
+});
+
 app.post("/api/predictions", async (req, res) => {
 	if (req.body.mask) {
 		req.body.mask = addBackgroundToPNG(req.body.mask);
