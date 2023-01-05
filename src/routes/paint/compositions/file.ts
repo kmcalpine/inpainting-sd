@@ -5,14 +5,11 @@ export default function () {
 	const files = ref<any>([]);
 
 	function addFile(newFiles: any) {
-		console.log("adding file");
 		let newUploadableFiles = [...newFiles].map(
 			(file) => new UploadableFile(file)
 		);
 		// @ts-ignore
 		files.value = files.value.concat(newUploadableFiles);
-		console.log(newUploadableFiles);
-		console.log("file added");
 	}
 
 	return { files, addFile };
