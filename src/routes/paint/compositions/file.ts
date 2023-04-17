@@ -12,7 +12,11 @@ export default function () {
 		files.value = files.value.concat(newUploadableFiles);
 	}
 
-	return { files, addFile };
+	function resetFile() {
+		files.value = [];
+	}
+
+	return { files, addFile, resetFile };
 }
 
 interface UploadableFile {

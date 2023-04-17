@@ -10,6 +10,7 @@
 	const sleep = (ms: any) => new Promise((r) => setTimeout(r, ms));
 
 	const { mask } = storeToRefs(useMaskStore());
+	const { files, addFile, resetFile } = useFile();
 
 	let canvasInterface = reactive({
 		repaintAllStrokes: () => {},
@@ -24,13 +25,11 @@
 		canvasInterface.redrawCanvas();
 	};
 
-	const { files, addFile } = useFile();
-
 	const predictionOutput = ref<null | any>(null);
 
 	const prompt = ref("");
 	const loading = ref(false);
-	const submitHandler = async (e: any) => {
+	const submitHandler = async (e: Event) => {
 		loading.value = true;
 		e.preventDefault();
 
@@ -77,9 +76,8 @@
 		}
 	};
 
-	const getCanvasInterface = (canvasI: any) => {
-		console.log(canvasI);
-		canvasInterface = canvasI;
+	const getCanvasInterface = (ICanvas: any) => {
+		canvasInterface = ICanvas;
 	};
 
 	async function readAsDataURL(file: any) {
@@ -92,11 +90,27 @@
 			fr.readAsDataURL(file);
 		});
 	}
+
+	const reset = (e: Event) => {
+		resetFile();
+		predictionOutput.value = null;
+		prompt.value = "";
+		mask.value = "";
+		repaintAllStrokes();
+	};
 </script>
 
 <template>
 	<public-view>
 		<div class="w-[500px] h-[500px] flex flex-col bg-transparent mx-auto">
+			<div class="absolute top-0 -right-20 z-[999] flex flex-row">
+				<button
+					class="border border-gray-600 px-3 py-1 rounded-lg hover:bg-white/10"
+					@click="reset"
+				>
+					reset
+				</button>
+			</div>
 			<div
 				v-if="loading"
 				class="absolute w-full h-full opacity-80 bg-black z-[999]"
